@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="balgil.com.trip.contact">
+
+    <insert id="C_INSERT" parameterType="balgil.com.trip.contact.model.ContactVO">
+        insert into contact (id, title, content, attach_img, user_id, seller_id, act_id, act_name)
+        values (seq_contact.nextval, #{title}, #{content}, #{attach_img}, #{user_id}, #{seller_id}, #{act_id}, #{act_name})
+    </insert>
+
+    <select id="C_SELECT_ALL" resultType="balgil.com.trip.contact.model.ContactVO">
+        select * from contact 
+        <where>
+				<if test="seller_id!='admin01'">
+					seller_id = #{seller_id}
+				</if>
+		</where>
+		 order by id desc
+    </select>
+   
+    <select id="C_SELECT_ALL_USER" resultType="balgil.com.trip.contact.model.ContactVO">
+        select * from contact where user_id = #{user_id} order by id desc
+    </select>
+
+    <select id="C_SELECT_ONE" resultType="balgil.com.trip.contact.model.ContactVO">
+        select * from contact where id = #{id}
+    </select>
+    
+
+    <delete id="C_DELETE" parameterType="balgil.com.trip.contact.model.ContactVO">
+        delete from contact 
+        where id = #{id}
+    </delete>
+
+	<update id="C_UPDATE" parameterType="balgil.com.trip.contact.model.ContactVO">
+        update contact
+        set title = #{title}, content = #{content}, con_date = sysdate
+        where id = #{id}
+    </update>
+</mapper>

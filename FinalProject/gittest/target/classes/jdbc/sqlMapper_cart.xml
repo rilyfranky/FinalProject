@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="balgil.com.trip.cart">
+
+	<select id="CART_SELECT_ALL" resultType="balgil.com.trip.cart.model.CartVO">
+		select c.id, c.act_id, c.res_date, c.quantity, c.price, a.act_name,
+			(select i.name from image i where c.act_id = i.act_id
+			and rownum = 1) as img_name from cart c
+		join activity a on(c.act_id = a.id)
+		where user_id = #{user_id} order by id desc
+	</select>
+
+
+
+	<select id="CART_SELECT_ONE"
+		resultType="balgil.com.trip.cart.model.CartVO">
+		select * from CART where user_id = #{user_id} and act_id =
+		#{act_id} and res_date = TO_DATE(#{res_date}, 'YYYY-MM-DD')
+	</select>
+
+	<insert id="CART_INSERT_ONE"
+		parameterType="balgil.com.trip.cart.model.CartVO">
+		INSERT INTO CART (id, quantity, price, res_date,
+		user_id, act_id)
+		VALUES (SEQ_CART.nextval, #{quantity}, #{price},
+		TO_DATE(#{res_date}, 'YYYY-MM-DD'), #{user_id}, #{act_id})
+	</insert>
+
+	<update id="CART_INSERT_COUNT_UP"
+		parameterType="balgil.com.trip.cart.model.CartVO">
+		update CART set quantity = quantity + #{quantity} where
+		id = #{id}
+	</update>
+
+	<update id="CART_UPDATE_COUNT"
+		parameterType="balgil.com.trip.cart.model.CartVO">
+		update CART set quantity = #{quantity} where id = #{id}
+	</update>
+
+	<delete id="CART_DELETE_ONE"
+		parameterType="balgil.com.trip.cart.model.CartVO">
+		delete from CART where id = #{id}
+	</delete>
+
+	<delete id="CART_UPDATE_TIME">
+		delete from cart where <![CDATA[res_date < sysdate]]>
+	</delete>
+
+</mapper>

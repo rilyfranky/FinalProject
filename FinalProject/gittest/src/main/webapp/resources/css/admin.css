@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+#adminmenu1 {
+    width:1000px;
+    margin: auto;
+    overflow: hidden;
+/*     text-align: center; */
+}
+
+#adminmenu1 img{
+/*     width:980px; */
+	border: solid 10px #2b2bc1;
+	border-radius:40px;
+   	margin-top: 40px;
+/*     margin-bottom:20px; */
+    margin-left:50px;
+    overflow: hidden;
+	float:left;
+}
+
+#adminmenu1 img:hover {
+	border:solid 10px #BBBBBB;
+}

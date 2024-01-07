@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="balgil.com.trip.usercoupon">
+	<select id="USERCOUPON_SELECTALL" resultType="balgil.com.trip.usercoupon.model.UserCouponVO">
+		select c.code, c.name, c.expire, c.rate from coupon c join user_coupon u 
+		on c.code = u.couponcode where user_id = #{user_id} and isused = 0 order by code asc
+	</select>
+	
+	<update id="USERCOUPON_USE">
+		update user_coupon set isused = 1 where user_id = #{user_id} and couponcode = #{couponcode} 
+	</update>
+
+	<update id="USERCOUPON_BACK">
+		update user_coupon set isused = 0 where user_id = #{user_id} and couponcode = #{couponcode} 
+	</update>
+	
+	<insert id="USERCOUPON_INSERT">
+		insert into user_coupon (user_id, couponcode) values (#{user_id}, #{couponcode})
+	</insert>
+		
+	<select id="USERCOUPON_IF_USED" resultType="balgil.com.trip.usercoupon.model.UserCouponVO">
+		select * from user_coupon where user_id = #{user_id} and couponcode = #{couponcode}
+	</select>
+	
+</mapper>

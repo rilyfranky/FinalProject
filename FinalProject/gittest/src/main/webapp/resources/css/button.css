@@ -1,0 +1,26 @@
+@charset "UTF-8";
+.myButton {
+/* 	box-shadow:inset 0px 1px 0px 0px #dcecfb; */
+/* 	background:linear-gradient(to bottom, #bddbfa 5%, #80b5ea 100%); */
+	background-color:#0000C9;
+	border-radius:4px;
+	border:1px solid #0000C9;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family: NBG,sans-serif;
+	font-size:15px;
+	font-weight:bold;
+	padding:4px 5px;
+	text-decoration:none;
+/* 	text-shadow:0px 1px 0px #528ecc; */
+	margin: 5px 10px;
+}
+.myButton:hover {
+/* 	background:linear-gradient(to bottom, #80b5ea 5%, #bddbfa 100%); */
+	background-color:#000011;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}

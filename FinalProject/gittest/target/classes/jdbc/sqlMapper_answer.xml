@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="balgil.com.trip.answer">
+	<select id="ANSWER_SELECT_ALL" resultType="balgil.com.trip.answer.model.AnswerVO">
+		select * from answer where contact_id=#{contact_id} order by id desc
+	</select>
+	
+	<select id="ANSWER_SELECT_ONE" resultType="balgil.com.trip.answer.model.AnswerVO">
+		select * from answer where id = #{id}
+	</select>
+	
+	<insert id="ANSWER_INSERT" parameterType="balgil.com.trip.answer.model.AnswerVO">
+		insert into answer (id, content, ans_date, seller_id, contact_id)
+		values (seq_answer.nextval, #{content}, sysdate, #{seller_id}, #{contact_id})
+	</insert>
+	
+	<update id="ANSWER_UPDATE" parameterType="balgil.com.trip.answer.model.AnswerVO">
+		update answer set content = #{content}, ans_date = sysdate
+		where id = #{id}
+	</update>
+	
+	<delete id="ANSWER_DELETE">
+		delete from answer where id = #{id}
+	</delete>
+</mapper>

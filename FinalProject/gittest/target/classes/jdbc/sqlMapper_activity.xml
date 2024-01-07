@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="balgil.com.trip.activity">
+
+	<!-- 조인결과 대입용 resultMap -->
+	<resultMap id="ActivityVOResultMap" type="balgil.com.trip.activity.model.ActivityVO">
+	  <result property="eng_name" column="NAME" />
+	</resultMap>
+	
+
+	<select id="ACT_SELECT_ALL" resultType="balgil.com.trip.activity.model.ActivityVO">
+		select * from ACTIVITY
+		<where>
+			<if test="seller_id!='admin01'">
+				seller_id = #{seller_id}
+			</if>
+		</where> 
+		order by id desc
+	</select>
+	
+	<select id="ACT_SELECT_ALL_DEST" resultType="balgil.com.trip.activity.model.ActivityVO">
+		select * from ACTIVITY
+		where seller_id = #{seller_id} and dest_id = #{dest_id} order by id desc
+	</select>
+	
+	<select id="ACT_SELECT_ALL_USER" resultType="balgil.com.trip.activity.model.ActivityVO">
+		select * from ACTIVITY order by id desc
+	</select>
+	
+	<select id="ACT_SELECT_POPULAR" 
+	resultMap="ActivityVOResultMap"
+	resultType="balgil.com.trip.activity.model.ActivityVO">
+		<![CDATA[
+		  SELECT *
+		  FROM (
+		    SELECT *
+		    FROM activity
+		    ORDER BY vcount DESC
+		  ) WHERE ROWNUM <= 10
+		]]>
+	</select>
+	
+	<select id="ACT_SELECT_RECOMMENDED" 
+	resultMap="ActivityVOResultMap"
+	resultType="balgil.com.trip.activity.model.ActivityVO">
+		<![CDATA[
+		    SELECT *
+		    FROM activity
+		    WHERE tag = '추천'
+		]]>
+	</select>
+	
+	<select id="ACT_SELECT_ONE" resultType="balgil.com.trip.activity.model.ActivityVO">
+		select * from ACTIVITY where id = #{id}
+	</select>
+	
+	<select id="ACTIVITY_SELECTONE" resultType="balgil.com.trip.activity.model.ActivityVO">
+		select * from activity where id = #{id}
+	</select>
+	
+	<select id="ACT_SELECT_ONE_BY_ACT_NAME" resultType="balgil.com.trip.activity.model.ActivityVO">
+		select * from ACTIVITY 
+		where seller_id = #{seller_id} and act_name = #{act_name}
+	</select>
+	
+	<select id="ACT_SEARCH_LIST" resultType="balgil.com.trip.activity.model.ActivityVO">
+		select * from ACTIVITY where seller_id = #{seller_id} and ${searchKey} like #{searchWord}
+	</select>
+	
+	<select id="ACT_SEARCH_LIST_USER" 
+	resultMap="ActivityVOResultMap"
+	resultType="balgil.com.trip.activity.model.ActivityVO">
+		<![CDATA[
+		    SELECT *
+		    FROM activity 
+		    WHERE ${searchKey} like #{searchWord}
+		]]>
+	</select>
+	
+	<insert id="ACT_INSERT" parameterType="balgil.com.trip.activity.model.ActivityVO">
+		INSERT INTO ACTIVITY ("ID", "ACT_NAME", "CONTENT", "RATE", "VCOUNT", "TAG", "ADD", "PRICE", "SELLER_ID", "DEST_ID","ENG_NAME")
+		VALUES (SEQ_ACTIVITY.nextval, #{act_name}, #{content}, 0, 0, #{tag}, #{add}, #{price}, #{seller_id}, #{dest_id}, #{eng_name})
+	</insert>
+	
+	<update id="ACT_UPDATE" parameterType="balgil.com.trip.activity.model.ActivityVO">
+		update ACTIVITY set ACT_NAME=#{act_name} , CONTENT=#{content} , 
+				TAG=#{tag} , "ADD"=#{add}, DEST_ID=#{dest_id},
+				PRICE=#{price}, ACT_DATE=SYSDATE
+				<if test="eng_name!=null">
+					, ENG_NAME=#{eng_name}
+				</if>
+		where ID = #{id}
+	</update>
+	
+	<update id="ACT_UPDATE_RATE" parameterType="balgil.com.trip.activity.model.ActivityVO">
+		UPDATE activity
+		SET rate = (
+		  SELECT AVG(c.rate)
+		  FROM comments c
+		  WHERE c.ACT_ID = activity.ID
+		)
+		WHERE ID = #{id}
+	</update>
+	
+	<update id="ACT_VCOUNTUP" parameterType="balgil.com.trip.activity.model.ActivityVO">
+		update ACTIVITY set vcount=vcount+1
+		where ID = #{id}
+	</update>
+	
+	<delete id="ACT_DELETE">
+		delete from ACTIVITY where id = #{id}
+	</delete>
+</mapper>

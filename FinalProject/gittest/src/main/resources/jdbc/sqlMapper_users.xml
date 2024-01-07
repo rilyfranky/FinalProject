@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="balgil.com.trip.users">
+	<insert id="U_INSERT">
+		insert into users(id, user_id, pw, name, tel, eng_name, email, type, point) 
+		values(seq_user.nextval, #{user_id}, #{pw}, #{name}, #{tel}, #{eng_name}, #{email}, #{type}, 3000)
+	</insert>
+	
+	<update id="U_UPDATE">
+		update users set name=#{name}, pw=#{pw}, eng_name=#{eng_name}, tel=#{tel}, email=#{email}, img=#{img}
+		where user_id = #{user_id}
+	</update>
+	
+	<delete id="U_DELETE" parameterType="balgil.com.trip.users.model.UsersVO">
+		delete from users where user_id = #{user_id}
+	</delete>
+	
+	<select id="U_ID_CHECK" resultType="balgil.com.trip.users.model.UsersVO">
+		select * from users where user_id = #{user_id}
+	</select>
+	
+	<select id="LOGIN" resultType="balgil.com.trip.users.model.UsersVO">
+		select * from users where user_id = #{user_id} and pw = #{pw}
+	</select>
+	
+	<select id="USER_RECORD" resultType="balgil.com.trip.users.model.UsersVO">
+		select u.user_id from reservation r join users u 
+		on r.user_id = u.user_id where u.user_id = #{user_id}
+	</select>
+	
+	<update id="U_TYPE_UPDATE">
+		update users set type = 4 where user_id = #{user_id}
+	</update>
+	
+	<update id="SELLER_TYPE_UPDATE">
+		update users set type = 1 where user_id = #{user_id}
+	</update>
+	
+	<update id="LOGIN_POINT_UPDATE">
+		update users set point = point + 100 where user_id = #{user_id}
+	</update>
+
+	<select id="U_SELECT_ALL_SELLER" resultType="balgil.com.trip.users.model.UsersVO"> 
+		select * from users where type in (1, 2) order by type desc, id desc
+	</select>
+
+	<select id="U_SELECT_ALL_USER" resultType="balgil.com.trip.users.model.UsersVO"> 
+		select * from users where type = 3 order by id desc
+	</select>
+	
+	<select id="SELLER_SEARCH_LIST_NAME" resultType="balgil.com.trip.users.model.UsersVO"> 
+		select * from users where name like #{searchWord} and type in (1,2) order by type desc, id desc
+	</select>
+	
+	<select id="SELLER_SEARCH_LIST_USER_ID" resultType="balgil.com.trip.users.model.UsersVO"> 
+		select * from users where user_id like #{searchWord} and type in (1,2) order by type desc, id desc
+	</select>
+	
+	<select id="USER_SEARCH_LIST_NAME" resultType="balgil.com.trip.users.model.UsersVO"> 
+		select * from users where name like #{searchWord} and type = 3 order by id desc
+	</select>
+	
+	<select id="USER_SEARCH_LIST_USER_ID" resultType="balgil.com.trip.users.model.UsersVO"> 
+		select * from users where user_id like #{searchWord} and type = 3 order by id desc
+	</select>
+	
+	<select id="USER_PASSWORD" resultType="balgil.com.trip.users.model.UsersVO"> 
+		select * from users where user_id = #{user_id} and name = #{name} and tel = #{tel}
+	</select>
+	
+	<!-- reservation용입니다 -->
+	<select id="USER_SELECT_ONE" resultType="balgil.com.trip.users.model.UsersVO"> 
+		select * from users where user_id = #{user_id}
+	</select>
+	
+	<update id="USERPOINT_UPDATE">
+		update users set point = point - #{point} where user_id = #{user_id}
+	</update>
+
+	<update id="USERPOINT_INSERT">
+		update users set point = point + #{point} where user_id = #{user_id}
+	</update>
+</mapper>

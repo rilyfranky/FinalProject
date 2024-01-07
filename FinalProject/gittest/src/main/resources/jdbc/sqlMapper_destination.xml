@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="balgil.com.trip.destination">
+
+	<insert id="DESTINATION_INSERT"
+		parameterType="balgil.com.trip.destination.model.DestinationVO">
+		INSERT INTO DESTINATION (id, name, category)
+		VALUES
+		(#{id},
+		#{name}, #{category})
+	</insert>
+
+	<select id="DESTINATION_SELECT_ALL"
+		parameterType="balgil.com.trip.destination.model.DestinationVO"
+		resultType="balgil.com.trip.destination.model.DestinationVO">
+		SELECT id, name, category
+		FROM DESTINATION
+		<where>
+			<if test="category != null">category = #{category}</if>
+		</where>
+	</select>
+
+	<select id="DESTINATION_SELECT_ONE_BY_ID"
+		parameterType="balgil.com.trip.destination.model.DestinationVO"
+		resultType="balgil.com.trip.destination.model.DestinationVO">
+		SELECT id, name, category
+		FROM DESTINATION
+		WHERE id = #{id}
+	</select>
+</mapper>

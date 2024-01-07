@@ -1,0 +1,52 @@
+@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300,700,900);
+
+*{
+    margin:0px;
+    font-family: NBG,sans-serif;
+    text-decoration: none;
+}
+
+#content a{
+    text-decoration: none; 
+    text-align: center;
+    color:#666666;
+    font-size:17px;
+    font-weight: bold;
+}
+
+#login a{
+    text-decoration: none; 
+    text-align: center;
+    color:#888888;
+    font-size:14px;
+}
+
+li{list-style-type:none;}
+
+header{width:1000px;  margin:0px auto; overflow: hidden;}
+
+#logo, #content{float: left;}
+
+#login{float: right;}
+
+#content li{
+    float: left;
+    margin-top: 65px;
+    margin-left:20px;
+}
+
+#login li{
+    float: left;
+    margin-top: 65px;
+    margin-left:15px;
+}
+
+#logo {
+    height: 55px;
+    margin-top: 40px;
+    /*margin-left: 50px;*/
+}
+
+
+

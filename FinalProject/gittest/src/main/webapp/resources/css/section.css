@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+section{
+	width:1000px;  
+	margin:0px auto; 
+	overflow: hidden;
+}
+
+/* section밑에 있는 링크의 밑줄을 지우고 색깔을 검정색으로 변경 */
+section a{
+  color: black;
+  text-decoration: none !important;
+}
+section a:visited { color: black; }
+section a:hover { color: black; }
+section a:active { color: black; }

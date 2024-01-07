@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="balgil.com.trip.reservation">
+
+	<insert id="RESERVATION_INSERT" parameterType="balgil.com.trip.reservation.model.ReservationVO">
+		insert into reservation (id, quantity, price, res_date, price_total, act_id, user_id)
+		values (#{id}, #{quantity}, #{price}, TO_DATE(#{res_date}, 'YYYY-MM-DD'), #{price_total}, #{act_id}, #{user_id})
+	</insert>
+	
+	<update id="RESERVATION_UPDATE" parameterType="balgil.com.trip.reservation.model.ReservationVO">
+		update reservation set iscanceled=1 where id = #{id}
+	</update>
+	
+	<select id="RESERVATION_SELECT_ALL" resultType="balgil.com.trip.reservation.model.ReservationVO">
+    	SELECT r.id, r.res_date, r.act_id, a.act_name,
+           (SELECT i.name FROM image i WHERE r.act_id = i.act_id 
+           AND ROWNUM = 1) AS img_name
+	    FROM reservation r
+	    JOIN activity a ON (r.act_id = a.id)
+	    WHERE user_id = #{user_id} AND iscanceled = 0
+	    ORDER BY r.res_date ASC
+	</select>
+
+	
+	<select id="CANCEL_RESERVATION_SELECT_ALL" resultType="balgil.com.trip.reservation.model.ReservationVO">
+		SELECT r.id, r.res_date, r.act_id, a.act_name,
+           (SELECT i.name FROM image i WHERE r.act_id = i.act_id 
+           AND ROWNUM = 1) AS img_name
+	    FROM reservation r
+	    JOIN activity a ON (r.act_id = a.id)
+	    WHERE user_id = #{user_id} AND iscanceled = 1
+	    ORDER BY r.res_date ASC
+	</select>
+
+	<select id="EXPIRED_RESERVATION_SELECT_ALL" resultType="balgil.com.trip.reservation.model.ReservationVO">
+		SELECT r.id, r.res_date, r.act_id, a.act_name,
+           (SELECT i.name FROM image i WHERE r.act_id = i.act_id 
+           AND ROWNUM = 1) AS img_name
+	    FROM reservation r
+	    JOIN activity a ON (r.act_id = a.id)
+	    WHERE user_id = #{user_id} AND iscanceled = 2
+	    ORDER BY r.res_date ASC
+	</select>
+
+	<select id="RESERVATION_SELECT_ONE" resultType="balgil.com.trip.reservation.model.ReservationVO">
+		select r.id, r.res_date, r.act_id, a.act_name, r.quantity, r.price, r.price_total 
+		from reservation r join activity a on(r.act_id = a.id)
+		where r.id = #{id} and user_id = #{user_id}
+	</select>
+	
+	<delete id="RESERVATION_DELETE" parameterType="balgil.com.trip.reservation.model.ReservationVO">
+		delete from reservation where id = #{id}
+	</delete>
+
+	<update id="RESERVATION_UPDATE_TIME">
+		update reservation set iscanceled = 2 where <![CDATA[res_date < sysdate]]> and iscanceled = 0
+	</update>
+	
+	<update id="RESERVATION_COMMENTS" parameterType="balgil.com.trip.reservation.model.ReservationVO">
+		update reservation set iscommented=1 where id = #{id}
+	</update>
+	
+	<update id="RESERVATION_NO_COMMENTS" parameterType="balgil.com.trip.reservation.model.ReservationVO">
+		update reservation set iscommented=0 where id = #{id}
+	</update>
+	
+	<select id="EXPIRED_RESERVATION_SELECT_NOCOMMENTS" resultType="balgil.com.trip.reservation.model.ReservationVO">
+	    SELECT r.id, r.res_date, r.act_id, a.act_name,
+	           (SELECT i.name FROM image i WHERE r.act_id = i.act_id AND ROWNUM = 1) AS img_name
+	    FROM reservation r
+	    JOIN activity a ON (r.act_id = a.id)
+	    WHERE user_id = #{user_id} AND iscanceled = 2 AND iscommented = 0
+	    ORDER BY r.res_date ASC
+	</select>
+
+	
+</mapper>

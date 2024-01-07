@@ -1,0 +1,42 @@
+@charset "UTF-8";
+footer{
+    width:1000px;
+    margin: 0px auto;
+}
+
+footer > div{
+    border: 0px solid magenta; 
+    margin:5px 0px 0px 0px;
+    overflow: hidden;
+}
+#line1 ul{margin: -40px; font-weight: bold;}
+
+#line1 li{
+    float: left;
+    margin:150px 20px 20px 0px;
+    font-size: 15px;
+}
+
+#page{
+    float:right;
+    margin-top: 40px;
+    margin-right: 25px;
+}
+
+#line1{border-bottom: 1px solid black;}
+
+#line1 p{color: black;}
+
+#line2{
+
+    font-size: 13px;
+    color: #666666;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#line3, #line4{
+    font-size: 11px;
+    color: #b0b0b0;
+    margin-bottom: 10px;
+}

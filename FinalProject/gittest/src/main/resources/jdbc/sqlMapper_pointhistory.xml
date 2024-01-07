@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="balgil.com.trip.pointhistory">
+	<insert id="POINTHISTORY_USE_INSERT" parameterType="balgil.com.trip.pointhistory.model.PointHistoryVO">
+		insert into point_history (user_id, history, point, point_date)
+		values (#{user_id}, '구매사용', #{point}, sysdate)
+	</insert>
+
+	<insert id="POINTHISTORY_USE_INSERT_BACK" parameterType="balgil.com.trip.pointhistory.model.PointHistoryVO">
+		insert into point_history (user_id, history, point, point_date)
+		values (#{user_id}, '구매취소', #{point}, sysdate)
+	</insert>
+	
+	<insert id="POINTHISTORY_SAVE_INSERT" parameterType="balgil.com.trip.pointhistory.model.PointHistoryVO">
+		insert into point_history (user_id, history, point, point_date)
+		values (#{user_id}, #{history}, #{point}, TO_DATE(SYSDATE, 'YY-MM-DD'))
+	</insert>
+	
+	<select id="POINTHISTORY_SELECT_ONE" resultType="balgil.com.trip.pointhistory.model.PointHistoryVO">
+		select * from point_history where user_id = #{user_id} and history = '로그인' and point_date = TO_DATE(SYSDATE, 'YY-MM-DD')
+	</select>
+	
+	<select id="POINTHISTORY_SELECT_USERS" resultType="balgil.com.trip.pointhistory.model.PointHistoryVO">
+		select * from point_history where user_id = #{user_id} order by point_date desc
+	</select>
+	
+</mapper>

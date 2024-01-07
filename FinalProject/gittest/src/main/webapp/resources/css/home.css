@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+/* 중앙정렬 */
+section > section:first-child{
+	text-align: center;
+}
+
+/* 탑메뉴랑 거리두기 */
+section > section{
+	margin: 25px 0px 0px 0px;
+}
+
+#recommended,#allAct,#destinations{ 
+  text-align: center;
+}

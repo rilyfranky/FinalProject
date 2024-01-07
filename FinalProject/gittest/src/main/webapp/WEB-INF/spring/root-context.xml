@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- oracle.properties를 가져오는 빈 , -->
+	<bean id="propertyPlaceholderConfigurer" 
+	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<value>classpath:jdbc/oracle.properties</value>
+		</property>
+	</bean>
+	<util:properties id="property" location="classpath:jdbc/oracle.properties" />
+	<!--1. 기존 오프라인 jdbc용 -->
+<!-- 	<bean id="dataSource" -->
+<!-- 		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> -->
+<!-- 		<property name="driverClassName" -->
+<!-- 			value="${oracle.DRIVER_NAME}" /> -->
+<!-- 		<property name="url" value="${oracle.URL}" /> -->
+<!-- 		<property name="username" value="${oracle.USER}" /> -->
+<!-- 		<property name="password" value="${oracle.PASSWORD}" /> -->
+<!-- 	</bean> -->
+
+	<!--1. 온라인 jdbc용 -->
+	<bean id="dataSource"
+		class="oracle.ucp.jdbc.PoolDataSourceImpl">
+		<property name="connectionFactoryClassName"
+			value="${oracle.DRIVER_NAME}" />
+		<property name="URL" value="${oracle.URL}" />
+		<property name="user" value="${oracle.USER}" />
+		<property name="password" value="${oracle.PASSWORD}" />
+	</bean>
+	
+	<!--2. pom.xml mybatis.jar -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:jdbc/sqlMapper_answer.xml</value>
+				<value>classpath:jdbc/sqlMapper_contact.xml</value>
+				<value>classpath:jdbc/sqlMapper_coupon.xml</value>
+				<value>classpath:jdbc/sqlMapper_comments.xml</value>
+				<value>classpath:jdbc/sqlMapper_faq.xml</value>
+				<value>classpath:jdbc/sqlMapper_cart.xml</value>
+				<value>classpath:jdbc/sqlMapper_image.xml</value>
+				<value>classpath:jdbc/sqlMapper_reservation.xml</value>
+				<value>classpath:jdbc/sqlMapper_payment.xml</value>
+				<value>classpath:jdbc/sqlMapper_route.xml</value>
+				<value>classpath:jdbc/sqlMapper_usercoupon.xml</value>
+				<value>classpath:jdbc/sqlMapper_users.xml</value>
+				<value>classpath:jdbc/sqlMapper_activity.xml</value>
+				<value>classpath:jdbc/sqlMapper_pointhistory.xml</value>
+				<value>classpath:jdbc/sqlMapper_wishlist.xml</value>
+				<value>classpath:jdbc/sqlMapper_destination.xml</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+			<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="10485760" /> 
+		<!-- -1 이면 크기제한 없음 10MB로 제한함 -->
+	</bean>
+	
+	<bean id="mapProperty" class="balgil.com.trip.map.model.MapVO">
+		<property name="clientID" value="${naver.CLIENTID}" />
+	</bean>
+
+	<!--1. 네이버 지도 API -->
+<!-- 	<bean id="mapProperty" class="balgil.com.trip.map.model.MapVO"> -->
+<!-- 		<property name="clientID" value="${naver.CLIENTID}" /> -->
+<!-- 	</bean> -->
+	
+</beans>

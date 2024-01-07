@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+
+.scrolling-wrapper{
+	overflow-x: auto;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+.card-block{
+	height: 100%;
+	background-color: #fff;
+	border: none;
+	background-position: center;
+	background-size: cover;
+	transition: all 0.2s ease-in-out !important;
+	border-radius: 24px;
+	&:hover{
+		transform: translateY(-5px);
+		box-shadow: none;
+		opacity: 0.9;
+	}
+}
+
+/* act제목이 너무 긴경우 감춤*/
+.card-act-name{
+   overflow:hidden;
+   text-overflow:ellipsis;
+   white-space:nowrap; 
+}
+
+span.stars, span.stars span {
+    display: block;
+    background: url(../uploadimg/star.png) 0 -16px repeat-x;
+    width: 80px;
+    height: 16px;
+}
+
+span.stars span {
+    background-position: 0 0;
+}

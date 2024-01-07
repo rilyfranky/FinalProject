@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="balgil.com.trip.faq">
+
+    <insert id="FAQ_INSERT" parameterType="balgil.com.trip.faq.model.FaqVO">
+        insert into faq (id, title, content) 
+        values (seq_faq.nextval, #{title}, #{content})
+    </insert>
+
+    <update id="FAQ_UPDATE" parameterType="balgil.com.trip.faq.model.FaqVO">
+        update faq 
+        set title = #{title}, content = #{content}, faq_date = sysdate
+        where id = #{id}
+    </update>
+
+    <delete id="FAQ_DELETE" parameterType="balgil.com.trip.faq.model.FaqVO">
+        delete from faq 
+        where id = #{id}
+    </delete>
+
+    <select id="FAQ_SELECT_ALL" resultType="balgil.com.trip.faq.model.FaqVO">
+        select * from faq order by id desc
+    </select>
+
+    <select id="FAQ_SELECT_ONE" resultType="balgil.com.trip.faq.model.FaqVO" parameterType="balgil.com.trip.faq.model.FaqVO">
+        select * from faq where id = #{id}
+    </select>
+  
+  	<select id="FAQ_SEARCH_LIST_TITLE" resultType="balgil.com.trip.faq.model.FaqVO">
+        select * from faq where title like #{searchWord} order by id desc
+    </select>
+  
+  	<select id="FAQ_SEARCH_LIST_CONTENT" resultType="balgil.com.trip.faq.model.FaqVO">
+        select * from faq where content like #{searchWord} order by id desc
+    </select>
+  
+
+</mapper>
